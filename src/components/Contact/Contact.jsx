@@ -1,7 +1,7 @@
 import css from "./Contact.module.css";
 import { FaUser, FaPhone } from "react-icons/fa";
 
-export const Contact = ({ data: { id, name, number } }) => {
+export const Contact = ({ data: { id, name, number }, onDelete }) => {
   return (
     <div className={css.container}>
       <div className={css.box}>
@@ -15,7 +15,9 @@ export const Contact = ({ data: { id, name, number } }) => {
           {number}
         </p>
       </div>
-      <button>Delete</button>
+      <button className={css.button} onClick={() => onDelete(id)}>
+        Delete
+      </button>
     </div>
   );
 };

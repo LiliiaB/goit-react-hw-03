@@ -13,12 +13,18 @@ export default function App() {
   ]);
   const addContact = (newContact) => {};
 
+  const deleteContact = (contactId) => {
+    setContacts((prev) => {
+      return prev.filter((contact) => contact.id !== contactId);
+    });
+  };
+
   return (
     <>
       <h1>Phonebook</h1>
       <ContactForm />
       <SearchBox />
-      <ContactList contacts={contacts} />
+      <ContactList contacts={contacts} onDelete={deleteContact} />
     </>
   );
 }

@@ -2,7 +2,5 @@
   border: 2pz solid black;
   border-radius: 5px;
   list-style-type: none;
-}
-
-.item {
+  padding-left: 0;
 }
