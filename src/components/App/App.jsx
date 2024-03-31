@@ -11,7 +11,6 @@ export default function App() {
     { id: "id-3", name: "Eden Clements", number: "645-17-79" },
     { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
   ]);
-  const [search, setSearch] = useState("");
 
   const addContact = (newContact) => {
     setContacts((prevContacts) => {
@@ -36,12 +35,22 @@ export default function App() {
     localStorage.setItem("contacts", JSON.stringify(contacts));
   }, [contacts]);
 
+  const [search, setSearch] = useState("");
+
+  const filteredContacts = contacts.filter((contact) =>
+    contact.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value);
+  };
+
   return (
     <>
       <h1>Phonebook</h1>
       <ContactForm onAdd={addContact} />
-      <SearchBox />
-      <ContactList contacts={contacts} onDelete={deleteContact} />
+      <SearchBox value={search} onChange={handleSearchChange} />
+      <ContactList contacts={filteredContacts} onDelete={deleteContact} />
     </>
   );
 }

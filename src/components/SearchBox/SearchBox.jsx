@@ -1,10 +1,10 @@
 import css from "./SearchBox.module.css";
 
-export const SearchBox = ({}) => {
+export const SearchBox = ({ value, onChange }) => {
   return (
     <div>
       <p className={css.label}>Find contacts by name</p>
-      <input type="text" />
+      <input type="text" value={value} onChange={onChange} />
     </div>
   );
 };
