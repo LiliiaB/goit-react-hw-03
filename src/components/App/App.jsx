@@ -11,7 +11,13 @@ export default function App() {
     { id: "id-3", name: "Eden Clements", number: "645-17-79" },
     { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
   ]);
-  const addContact = (newContact) => {};
+  const [search, setSearch] = useState("");
+
+  const addContact = (newContact) => {
+    setContacts((prevContacts) => {
+      return [...prevContacts, newContact];
+    });
+  };
 
   const deleteContact = (contactId) => {
     setContacts((prev) => {
@@ -19,10 +25,21 @@ export default function App() {
     });
   };
 
+  useEffect(() => {
+    const storedContacts = JSON.parse(localStorage.getItem("contacts"));
+    if (storedContacts) {
+      setContacts(storedContacts);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("contacts", JSON.stringify(contacts));
+  }, [contacts]);
+
   return (
     <>
       <h1>Phonebook</h1>
-      <ContactForm />
+      <ContactForm onAdd={addContact} />
       <SearchBox />
       <ContactList contacts={contacts} onDelete={deleteContact} />
     </>

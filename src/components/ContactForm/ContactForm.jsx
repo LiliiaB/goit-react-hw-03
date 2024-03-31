@@ -1,21 +1,55 @@
-import { Form, Formik } from "formik";
+import { Form, Formik, Field, ErrorMessage } from "formik";
 import { useId } from "react";
+import * as Yup from "yup";
+import { nanoid } from "nanoid";
 import css from "./ContactForm.module.css";
 
-export const ContactForm = () => {
+const validationSchema = Yup.object().shape({
+  name: Yup.string()
+    .required("Name is required")
+    .min(3, "Name must be at least 3 characters")
+    .max(50, "Name must not exceed 50 characters"),
+  number: Yup.string()
+    .required("Number is required")
+    .min(3, "Number must be at least 3 characters")
+    .max(50, "Number must not exceed 50 characters"),
+});
+
+export const ContactForm = ({ onAdd }) => {
   const nameFieldId = useId();
   const numberFieldId = useId();
+
+  const handleSubmit = (values, actions) => {
+    const id = nanoid();
+    onAdd({ id, ...values });
+    actions.resetForm();
+  };
   return (
-    <Formik>
+    <Formik
+      initialValues={{
+        name: "",
+        number: "",
+      }}
+      onSubmit={handleSubmit}
+      validationSchema={validationSchema}
+    >
       <Form className={css.form}>
-        <label className={css.label} htmlFor={nameFieldId}>
+        <label name="name" className={css.label} htmlFor={nameFieldId}>
           Name
         </label>
-        <input className={css.field} type="text" name="name" />
-        <label className={css.label} htmlFor={numberFieldId}>
+        <Field className={css.field} type="text" name="name" id={nameFieldId} />
+        <ErrorMessage name="name" component="span" className={css.error} />
+
+        <label className={css.label} name="number" htmlFor={numberFieldId}>
           Number
         </label>
-        <input className={css.field} type="number" name="number" />
+        <Field
+          className={css.field}
+          type="number"
+          name="number"
+          id={numberFieldId}
+        />
+        <ErrorMessage name="number" component="span" className={css.error} />
         <button className={css.button} type="submit">
           Add Contact
         </button>
